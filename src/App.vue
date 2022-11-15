@@ -54,10 +54,16 @@
 </template>
 
 <script>
+import { useAuthStore } from './stores/authStore.js'
+
 export default {
+  setup() {
+    const store = useAuthStore()
+    return {store}
+  },
   computed: {
     currentUser() {
-      return this.$store.state.auth.user;
+      return this.store.user;
     },
     showAdminBoard() {
       if (this.currentUser && this.currentUser['roles']) {
@@ -76,7 +82,7 @@ export default {
   },
   methods: {
     logOut() {
-      this.$store.dispatch('auth/logout');
+      this.store.logout();
       this.$router.push('/login');
     }
   }

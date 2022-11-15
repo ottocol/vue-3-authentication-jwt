@@ -41,6 +41,8 @@
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
+import { useAuthStore } from '../stores/authStore.js'
+
 
 export default {
   name: "Login",
@@ -48,6 +50,10 @@ export default {
     Form,
     Field,
     ErrorMessage,
+  },
+  setup() {
+    const store = useAuthStore()
+    return {store}
   },
   data() {
     const schema = yup.object().shape({
@@ -63,7 +69,7 @@ export default {
   },
   computed: {
     loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
+      return this.store.status.loggedIn;
     },
   },
   created() {
@@ -75,7 +81,7 @@ export default {
     handleLogin(user) {
       this.loading = true;
 
-      this.$store.dispatch("auth/login", user).then(
+      this.store.login(user).then(
         () => {
           this.$router.push("/profile");
         },

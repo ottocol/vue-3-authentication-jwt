@@ -50,6 +50,8 @@
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
+import { useAuthStore } from '../stores/authStore.js'
+
 
 export default {
   name: "Register",
@@ -57,6 +59,10 @@ export default {
     Form,
     Field,
     ErrorMessage,
+  },
+  setup() {
+    const store = useAuthStore()
+    return {store}
   },
   data() {
     const schema = yup.object().shape({
@@ -86,7 +92,7 @@ export default {
   },
   computed: {
     loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
+      return this.store.status.loggedIn;
     },
   },
   mounted() {
@@ -100,7 +106,7 @@ export default {
       this.successful = false;
       this.loading = true;
 
-      this.$store.dispatch("auth/register", user).then(
+      this.store.register(user).then(
         (data) => {
           this.message = data.message;
           this.successful = true;
