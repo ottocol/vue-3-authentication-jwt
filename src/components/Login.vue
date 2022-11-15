@@ -78,14 +78,13 @@ export default {
     }
   },
   methods: {
-    handleLogin(user) {
+    async handleLogin(user) {
       this.loading = true;
-
-      this.store.login(user).then(
-        () => {
-          this.$router.push("/profile");
-        },
-        (error) => {
+      try {
+        await this.store.login(user)
+        this.$router.push("/profile");
+      }
+      catch (error) {
           this.loading = false;
           this.message =
             (error.response &&
@@ -93,8 +92,7 @@ export default {
               error.response.data.message) ||
             error.message ||
             error.toString();
-        }
-      );
+      }
     },
   },
 };

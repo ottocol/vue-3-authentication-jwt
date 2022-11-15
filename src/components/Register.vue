@@ -101,29 +101,28 @@ export default {
     }
   },
   methods: {
-    handleRegister(user) {
+    async handleRegister(user) {
       this.message = "";
       this.successful = false;
       this.loading = true;
 
-      this.store.register(user).then(
-        (data) => {
-          this.message = data.message;
-          this.successful = true;
-          this.loading = false;
-        },
-        (error) => {
-          this.message =
+      try {
+        var data = await this.store.register(user)
+        this.message = data.message;
+        this.successful = true;
+        this.loading = false;
+      } 
+      catch(error) {
+        this.message =
             (error.response &&
               error.response.data &&
               error.response.data.message) ||
             error.message ||
             error.toString();
-          this.successful = false;
-          this.loading = false;
-        }
-      );
-    },
+        this.successful = false;
+        this.loading = false;
+      }
+    }
   },
 };
 </script>
