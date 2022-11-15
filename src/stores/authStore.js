@@ -16,12 +16,12 @@ export const useAuthStore = defineStore('auth', {
         var user = await AuthService.login(user)
         this.status.loggedIn = true;
         this.user = user;
-        return Promise.resolve(user);
+        return user;
       }
       catch(error) {
         this.status.loggedIn = false;
         this.user = null;
-        return Promise.reject(error);
+        throw error;
       }
     },
     logout(){
@@ -33,11 +33,11 @@ export const useAuthStore = defineStore('auth', {
       var response = await AuthService.register(user)
       try {
         this.status.loggedIn = false;
-        return Promise.resolve(response.data);
+        return response.data;
       }
       catch(error) {
         this.status.loggedIn = false;
-        return Promise.reject(error);
+        throw error;
       } 
     }
   }
